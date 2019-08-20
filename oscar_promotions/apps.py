@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from oscar.core.application import OscarConfig
 from oscar.core.loading import get_class, get_model
@@ -16,6 +17,21 @@ class PromotionsConfig(OscarConfig):
         super().ready()
         self.home_view = get_class('oscar_promotions.views', 'HomeView')
         self.record_click_view = get_class('oscar_promotions.views', 'RecordClickView')
+
+        settings.OSCAR_DASHBOARD_NAVIGATION += {
+            'label': _('Content blocks'),
+            'icon': 'icon-folder-close',
+            'children': [
+                {
+                    'label': _('Content blocks'),
+                    'url_name': 'dashboard:promotion-list',
+                },
+                {
+                    'label': _('Content blocks by page'),
+                    'url_name': 'dashboard:promotion-list-by-page',
+                },
+            ]
+        },
 
     def get_urls(self):
         PagePromotion = get_model('oscar_promotions', 'PagePromotion')
